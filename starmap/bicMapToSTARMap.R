@@ -4,7 +4,7 @@ if(len(argv)!=1) {
     quit()
 }
 require(tidyverse)
-outfile=gsub("_sample_mapping.txt","_star_manifest.txt",basename(args))
+outfile=gsub("_sample_mapping.txt","_star_manifest.txt",basename(argv))
 
 jobs=read_tsv(argv[1],col_names=F) %>% select(SID=X2,Dir=X4) %>% group_split(SID)
 
