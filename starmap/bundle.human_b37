@@ -1,0 +1,9 @@
+GENOME_FASTA=/juno/depot/assemblies/H.sapiens/b37/b37.fasta
+GENOME_BWA=/juno/depot/assemblies/H.sapiens/b37/index/bwa/0.7.12/b37.fasta
+GENOME_STARDIR=/juno/work/bic/socci/Work/Users/ElenitK/Wur4/Proj_14879_B/STAR/db/star/readLength_101
+
+#GTF=/juno/depot/annotation/H.sapiens/ensembl/v75/Homo_sapiens.GRCh37.75.gtf
+GTF=/juno/work/bic/socci/Work/Users/ElenitK/Wur4/Proj_14879_B/STAR/db/Homo_sapiens.GRCh37.75.B37_CLEAN.gtf
+
+DBSNP=/juno/depot/resources/gatk/bundle/2.8/b37/dbsnp_138.b37.vcf
+
