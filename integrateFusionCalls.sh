@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# BSUB: -n 17 -R "rusage[mem=4]"
+# BSUB: -n 12 -R "rusage[mem=12]" -R cmorsc1 -W 24:00
 
 export PATH=/juno/work/bic/socci/Work/Users/ElenitK/Wur4/Integrate/opt/bin:$PATH
 
