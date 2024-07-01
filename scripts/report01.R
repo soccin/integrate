@@ -1,6 +1,6 @@
 require(tidyverse)
-source("read_integrate.R")
-dd=map(fs::dir_ls("res",recur=T,regex="tOnly$"),read_integrate) %>% bind_rows
+source("integrate/scripts/read_integrate.R")
+dd=map(fs::dir_ls("res",recur=T,regex="somatic$"),read_integrate) %>% bind_rows
 
 coverage_ranks=dd %>%
     mutate(RID=row_number()) %>%
@@ -20,30 +20,25 @@ tbl0=dd %>%
 
 tbl0a=tbl0 %>% filter(Span_DNA_T>0 & Split_DNA_T>0)
 
-key=readxl::read_xlsx("Proj_KEJ.S01__Manifest.xlsx") %>% select(PID,Sample=RNASeq)
+forteFusionFile=fs::dir_ls(".",regex="__FusionTableV3__allEvents.csv")
 
-mf=read_csv("Proj_14879_B__FusionTableV3__allEvents.csv") %>%
+mf=read_csv(forteFusionFile) %>%
     select(1:11) %>%
     mutate(Junction=gsub(":.::","::",Junction)%>%gsub(":.$","",.)%>%gsub("chr","",.)) %>%
     mutate(Sample=gsub("s_","",Sample)) %>%
-    left_join(key) %>%
-    rename(SampleId=PID)
+    mutate(SampleId=gsub(".*-","",Sample)%>%paste0(.,"-T")) %>%
+    select(SampleId,everything())
 
-tbl1=left_join(dd %>% select(1:12),mf) %>%
+integrateCols=1:which(colnames(dd)=="Splicings")
+
+tbl1=left_join(dd %>% select(all_of(integrateCols)),mf,by = join_by(SampleId, Junction)) %>%
     filter(!is.na(Sample)) %>%
     arrange(Tier,desc(Split_RNA)) %>%
     select(-Splicings,Splicings)
 
 tblHC=tbl1 %>% filter(!is.na(Sample) & Span_DNA_T>0)
 
-# tbl2=dd %>%
-#     mutate(Fusion=paste0(`5_Prime`,"::",`3_Prime`)) %>%
-#     rename(JunctionI=Junction) %>%
-#     select(1:12,Fusion) %>%
-#     left_join(distinct(mf,Fusion,.keep_all=T)) %>%
-#     filter(!is.na(Sample)) %>%
-#     arrange(Tier,desc(Split_RNA)) %>%
-#     select(-Splicings,Splicings)
+projNo=grep("Proj_",strsplit(getwd(),"/")[[1]],value=T)
 
 openxlsx::write.xlsx(
             list(
@@ -51,5 +46,5 @@ openxlsx::write.xlsx(
                 ExactJuncMatch=tbl1,
                 HighConf=tblHC
             ),
-            "Proj_KEJ.S01_IntegrateFusions_TumOnly_03.xlsx")
+            cc(projNo,"IntegrateFusions_04.xlsx"))
 
