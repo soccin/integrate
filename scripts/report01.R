@@ -20,7 +20,13 @@ tbl0=dd %>%
 
 tbl0a=tbl0 %>% filter(Span_DNA_T>0 & Split_DNA_T>0)
 
-forteFusionFile=fs::dir_ls(".",regex="__FusionTableV3__allEvents.csv")
+forteFusionFile=fs::dir_ls(".",regex="__FusionTableV.__allEvents.csv")
+
+if(len(forteFusionFile)==0) {
+    cat("\nERROR: Can not find Forte Fusion output\n")
+    cat("*__FusionTableV?__allEvents.csv\n\n")
+    quit()
+}
 
 mf=read_csv(forteFusionFile) %>%
     select(1:11) %>%
