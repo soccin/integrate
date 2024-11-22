@@ -1,6 +1,13 @@
 require(tidyverse)
 source("integrate/scripts/read_integrate.R")
-dd=map(fs::dir_ls("res",recur=T,regex="somatic$"),read_integrate) %>% bind_rows
+
+TYPE="somatic"
+files=fs::dir_ls("res",recur=T,regex="somatic$")
+if(len(files)<1) {
+   files=fs::dir_ls("res",recur=T,regex="tOnly$")
+   TYPE="TumorOnly"
+}
+dd=map(files,read_integrate) %>% bind_rows
 
 coverage_ranks=dd %>%
     mutate(RID=row_number()) %>%
@@ -46,11 +53,32 @@ tblHC=tbl1 %>% filter(!is.na(Sample) & Span_DNA_T>0)
 
 projNo=grep("Proj_",strsplit(getwd(),"/")[[1]],value=T)
 
+fusionFreq=tbl0 %>%
+    mutate(Fusion=paste0(`5_Prime`,"::",`3_Prime`)) %>%
+    select(SampleId,Fusion) %>%
+    distinct() %>%
+    group_by(Fusion) %>%
+    summarize(N=n(),Samples=paste0(SampleId,collapse=";")) %>%
+    arrange(desc(N)) %>%
+    filter(N>1)
+
+genesFreq=tbl0 %>%
+    select(SampleId,`5_Prime`,`3_Prime`) %>%
+    gather(End,Gene,-SampleId) %>%
+    select(-End) %>%
+    distinct %>%
+    group_by(Gene) %>%
+    summarize(N=n(),Samples=paste0(SampleId,collapse=";")) %>%
+    arrange(desc(N)) %>%
+    filter(N>1)
+
 openxlsx::write.xlsx(
             list(
+                FusionFreq=fusionFreq,
+                GeneFreq=genesFreq,
                 IntegrateAll=tbl0,
                 ExactJuncMatch=tbl1,
                 HighConf=tblHC
             ),
-            cc(projNo,"IntegrateFusions_04.xlsx"))
+            cc(projNo,"IntegrateFusions",TYPE,"04.xlsx"))
 
