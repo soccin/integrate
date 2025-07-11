@@ -1,6 +1,6 @@
 argv=commandArgs(trailing=T)
 if(len(argv)!=1) {
-    cat("\n\tusage: bicMapToSTARMap.R mappingt.txt\n\n")
+    cat("\n\tusage: bicMapToSTARMap.R mapping.txt\n\n")
     quit()
 }
 require(tidyverse)
