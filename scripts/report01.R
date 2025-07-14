@@ -27,7 +27,7 @@ tbl0=dd %>%
 
 tbl0a=tbl0 %>% filter(Span_DNA_T>0 & Split_DNA_T>0)
 
-forteFusionFile=fs::dir_ls(".",regex="__FusionTableV.__allEvents.csv")
+forteFusionFile=fs::dir_ls(".",regex="__FusionTableV.__allEvents.csv",recur=T)
 
 if(len(forteFusionFile)==0) {
     cat("\nERROR: Can not find Forte Fusion output\n")
@@ -39,12 +39,13 @@ mf=read_csv(forteFusionFile) %>%
     select(1:11) %>%
     mutate(Junction=gsub(":.::","::",Junction)%>%gsub(":.$","",.)%>%gsub("chr","",.)) %>%
     mutate(Sample=gsub("s_","",Sample)) %>%
-    mutate(SampleId=gsub(".*-","",Sample)%>%paste0(.,"-T")) %>%
+    mutate(SampleId=Sample) %>%
     select(SampleId,everything())
 
 integrateCols=1:which(colnames(dd)=="Splicings")
 
-tbl1=left_join(dd %>% select(all_of(integrateCols)),mf,by = join_by(SampleId, Junction)) %>%
+tbl1=left_join(
+    dd %>% select(all_of(integrateCols)),mf,by = join_by(SampleId, Junction)) %>%
     filter(!is.na(Sample)) %>%
     arrange(Tier,desc(Split_RNA)) %>%
     select(-Splicings,Splicings)
