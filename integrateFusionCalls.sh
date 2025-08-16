@@ -27,6 +27,7 @@ fi
 
 usage () {
     echo -e "\n    usage: integrateFusionCalls.sh SID RNA_BAM DNA_TUMOR_BAM [DNA_NORMAL_BAM]"
+    echo -e "\n       For LSF: bsub -o LSF/ -n 12 -R "rusage[mem=12]" -R cmorsc1 -W 24:00\n"
 }
 
 if [ ! -e "$RNA_BAM" ]; then
