@@ -19,7 +19,8 @@ if(len(argv)!=1) {
 require(tidyverse)
 
 argv=commandArgs(trailing=T)
-mm=read_csv(argv[1],col_names=c("PATH","SID","TYPE"))
+mm=read_csv(argv[1],col_names=c("PATH","SID","TYPE")) %>%
+  mutate(TYPE=factor(TYPE,levels=c("R","T","N")))
 
 mm %>% spread(TYPE,PATH) %>% write_tsv("_integrate_manifest.tsv",col_names=F)
 
