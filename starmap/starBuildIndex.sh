@@ -4,7 +4,7 @@ SDIR="$( cd "$( dirname "$0" )" && pwd )"
 
 . $SDIR/../bin/getClusterName.sh
 
-BUNDLE_FILE="bundle.${CLUSTER}.human_b37"
+BUNDLE_FILE="$SDIR/bundle.${CLUSTER}.human_b37"
 if [ ! -f "$BUNDLE_FILE" ]; then
     echo -e "\n   ERROR: Bundle file $BUNDLE_FILE does not exist\n"
     exit 1
