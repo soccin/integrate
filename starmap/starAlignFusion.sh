@@ -28,6 +28,20 @@ fi
 
 THREADS=16
 
+if [ $# -ne 3 ]; then
+    echo
+    echo "Usage: $(basename $0) <SAMPLE_ID> <READ1_FILE> <READ2_FILE>"
+    echo
+    echo "  SAMPLE_ID   : Sample identifier for output directory naming"
+    echo "  READ1_FILE  : Path to first paired-end FASTQ file (R1)"
+    echo "  READ2_FILE  : Path to second paired-end FASTQ file (R2)"
+    echo
+    echo "Example:"
+    echo "  $(basename $0) Sample01 reads/Sample01_R1.fastq.gz reads/Sample01_R2.fastq.gz"
+    echo
+    exit 1
+fi
+
 SID=$1
 R1=$2
 R2=$3
