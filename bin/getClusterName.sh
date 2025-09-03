@@ -12,8 +12,9 @@ CDC_JOINED_ZONE=${CDC_JOINED_ZONE:-"UNKNOWN"}
 
 if [ "$CDC_JOINED_ZONE" == "UNKNOWN" ]; then
     # Network-based detection using subnet analysis
-    # JUNO cluster uses 10.0.x.x subnet on bondpriv interface
-    SUBNET=$(ifconfig | fgrep -C 1 bondpriv | fgrep inet | awk '{print $2}' | cut -f-2 -d.)
+    # JUNO cluster uses 10.0.x.x subnet, IRIS uses 10.1.x.x
+    # Find any 10.x network interface (excluding localhost) due to cluster network changes
+    SUBNET=$(ifconfig | fgrep -w inet | fgrep -v 127.0.0.1 | fgrep 10. | head -1 | awk '{print $2}' | cut -f-2 -d.)
 
     if [ "$SUBNET" == "10.0" ]; then
         CLUSTER=JUNO
