@@ -1,0 +1,4 @@
+GENOME_FASTA=/data1/test01/bic/depot/assemblies/H.sapiens/b37_gatk/b37.fasta
+GENOME_STARDIR=/data1/test01/bic/depot/assemblies/H.sapiens/b37_gatk/index/star/2.7.0a/ensembl/v75_custom/overhang100
+GTF=/data1/test01/bic/depot/annotation/H.sapiens/ensembl/v75_custom/Homo_sapiens.GRCh37.75.B37_CLEAN.gtf
+
