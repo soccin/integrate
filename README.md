@@ -37,9 +37,10 @@ cat Proj_17297_star_manifest.txt  | xargs -n 3 bsub -o LSF/ -J STARf -n 18 -W 12
 #
 Rscript integrate/makeIntegrateProjectFile.R bams
 
-cat _integrate_manifest.tsv | xargs -n 3 bsub -o LSF/ -n 12 -R "rusage[mem=12]" -R cmorsc1 -W 24:00 ./integrate/integrateFusionCalls.sh
+cat _integrate_manifest.tsv | xargs -n [34] bsub -o LSF/ -n 12 -R "rusage[mem=12]" -R cmorsc1 -W 24:00 ./integrate/integrateFusionCalls.sh
 ```
 
+N.B., 3 if no matched normals (SID,RNA.BAM,TUMOR.BAM), 4 if WGS T/N pairs.
 
 ### 0. Star chimeric maps
 
