@@ -26,11 +26,31 @@ The Integrate algorithm identifies gene fusions by analyzing:
 
 ## Usage
 
-### 1. Prepare manifest file
+### Quick start:
 
 ```bash
-Rscript makeIntegrateProjectFile.R bamManifest.csv
+Rscript integrate/starmap/bicMapToSTARMap.R ../meta/Proj_17297_sample_mapping.txt
+cat Proj_17297_star_manifest.txt  | xargs -n 3 bsub -o LSF/ -J STARf -n 18 -W 12:00 ./integrate/starmap/starAlignFusion.sh 
+#
+# Create intergrate manifest
+# Path,SampleID,Type[T,N,R]
+#
+Rscript integrate/makeIntegrateProjectFile.R bams
+
+cat _integrate_manifest.tsv | xargs -n 3 bsub -o LSF/ -n 12 -R "rusage[mem=12]" -R cmorsc1 -W 24:00 ./integrate/integrateFusionCalls.sh
 ```
+
+
+### 0. Star chimeric maps
+
+First need to prepare the correct BAM's using the correction options to STAR.
+
+```bash
+Rscript integrate/starmap/bicMapToSTARMap.R BIC_SAMPLE_MAPPING.txt
+cat {PROJNO}_star_manifest.txt | xargs -n 3 bsub -o LSF/ -J STARf -n 18 -W 12:00 ./integrate/starmap/starAlignFusion.sh 
+```
+
+### 1. Prepare manifest file
 
 Input CSV format (no header):
 ```
@@ -44,6 +64,12 @@ Where TYPE:
 - `R` = RNA sequencing data
 - `T` = Tumor DNA sequencing data  
 - `N` = Normal DNA sequencing data
+
+Then run
+
+```bash
+Rscript makeIntegrateProjectFile.R bamManifest.csv
+```
 
 ### 2. Run fusion detection
 
