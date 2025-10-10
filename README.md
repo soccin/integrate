@@ -65,6 +65,8 @@ Where TYPE:
 - `T` = Tumor DNA sequencing data  
 - `N` = Normal DNA sequencing data
 
+For the RNA bam you need to use `.*Chimeric.out.srt.bam`
+
 Then run
 
 ```bash
