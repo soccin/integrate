@@ -5,7 +5,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=18
 #SBATCH --mem=48GB
-#SBATCH --output=STARAF_%j.out
+#SBATCH --output=SLM/starAlign_%j.out
 
 # bsub -o LSF/ -J STARf -n 18 -W 359
 
