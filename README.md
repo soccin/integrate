@@ -53,9 +53,14 @@ cat {PROJNO}_star_manifest.txt | xargs -n 3 bsub -o LSF/ -J STARf -n 18 -W 12:00
 
 ### 1. Prepare manifest file
 
-Input CSV format (no header):
+Input CSV format **NO HEADER**
+in this column order
+  PATH
+  SID
+  TYPE
+
+eg
 ```
-PATH,SID,TYPE
 /path/to/rna.bam,SAMPLE01,R
 /path/to/tumor.bam,SAMPLE01,T
 /path/to/normal.bam,SAMPLE01,N
@@ -66,7 +71,9 @@ Where TYPE:
 - `T` = Tumor DNA sequencing data  
 - `N` = Normal DNA sequencing data
 
-For the RNA bam you need to use `.*Chimeric.out.srt.bam`
+- Again **NO HEADER**.
+
+- For the RNA bam you need to use `.*Chimeric.out.srt.bam`
 
 Then run
 

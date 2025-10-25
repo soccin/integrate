@@ -5,7 +5,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=18
 #SBATCH --mem=48GB
-#SBATCH --output=STARAF_%j.out
+#SBATCH --output=SLM/starAlign_%j.out
 
 # bsub -o LSF/ -J STARf -n 18 -W 359
 
@@ -85,7 +85,15 @@ cat $CBAM | egrep -v "^@" | cut -f1 | sort -S 40g -V | uniq > out/$SID/chimericR
 samtools view -hf 4 $ABAM | fgrep -vwf out/$SID/chimericReads.txt | samtools view -b - >out/$SID/${SID}__unmapped.bam
 
 gzip out/$SID/*__Aligned.out.sam &
-picardV2 SortSam SO=coordinate CREATE_INDEX=true I=$CBAM O=${CBAM/.sam/.srt.bam} &
+
+if [ "$CLUSTER" == "IRIS" ]; then
+    PICARD_JAR=/usersoftware/core001/common/RHEL_8/picard/3.4.0/picard.jar
+elif [ "$CLUSTER" == "JUNO" ]; then
+    PICARD_JAR=/home/socci/Code/Picard/jar/2.25.5/picard.jar
+fi
+
+java -jar $PICARD_JAR \
+  SortSam SO=coordinate CREATE_INDEX=true I=$CBAM O=${CBAM/.sam/.srt.bam} &
 
 wait
 
