@@ -19,7 +19,7 @@ set -e
 
 module load samtools
 
-. $SDIR/../bin/getClusterName.sh
+. $SDIR/bin/getClusterName.sh
 
 if [ "$CLUSTER" == "JUNO" ]; then
   # JUNO specific paths
