@@ -9,9 +9,30 @@
 
 # BSUB: -o LSF/ -n 12 -R "rusage[mem=12]" -R cmorsc1 -W 24:00
 
-export PATH=/juno/work/bic/socci/Work/Users/ElenitK/Wur4/Integrate/opt/bin:$PATH
+if [ -n "${SBATCH_SCRIPT_DIR}" ]; then
+    SDIR="${SBATCH_SCRIPT_DIR}"
+else
+    SDIR=$(dirname "$(readlink -f "$0")")
+fi
 
-DBPATH=/juno/work/bic/socci/Work/Users/ElenitK/Wur4/Integrate/db
+set -e
+
+module load samtools
+
+. $SDIR/../bin/getClusterName.sh
+
+if [ "$CLUSTER" == "JUNO" ]; then
+  # JUNO specific paths
+  export PATH=/juno/work/bic/socci/Work/Users/ElenitK/Wur4/Integrate/opt/bin:$PATH
+  DBPATH=/juno/work/bic/socci/Work/Users/ElenitK/Wur4/Integrate/db
+elif [ "$CLUSTER" == "IRIS" ]; then
+  # IRIS specific paths
+  export PATH=/data1/core001/work/bic/socci/Pipelines/Integrate/opt/bin:$PATH
+  DBPATH=/data1/core001/work/bic/socci/Pipelines/Integrate/db
+else
+  echo -e "\n   UNKNOWN CLUSTER" $CLUSTER "\n\n"
+  exit 1
+fi
 
 . $DBPATH/bundle.human_b37
 
