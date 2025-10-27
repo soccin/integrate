@@ -1,6 +1,10 @@
 # Integrate Fusion Detection Pipeline
 
+**Version:** 1.1.0
+
 A bioinformatics pipeline for detecting gene fusions in cancer samples using the Integrate algorithm. This pipeline processes RNA and DNA sequencing data to identify fusion events through split and spanning read analysis.
+
+See [VERSION.md](VERSION.md) for release information and [CHANGELOG.md](CHANGELOG.md) for detailed change history.
 
 ## Overview
 
@@ -118,10 +122,27 @@ Key output files:
 - STAR aligner
 - Human genome reference (GRCh37/b37)
 
-## LSF Configuration
+## Infrastructure Support
 
-The pipeline includes LSF batch system configuration:
+### Cluster Compatibility
+
+The pipeline supports both JUNO and IRIS HPC clusters with
+automatic detection and configuration. Cluster-specific paths
+are handled transparently via the `bin/getClusterName.sh` script.
+
+### Job Schedulers
+
+**SLURM (default):**
+- 18 CPUs
+- 144GB memory
+- 3 day maximum runtime
+- test01 partition
+
+**LSF (legacy):**
 - 12 cores
 - 12GB memory
 - 24 hour runtime
 - cmorsc1 resource requirement
+
+The pipeline automatically adapts to the detected cluster
+environment.
