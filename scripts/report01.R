@@ -27,30 +27,22 @@ tbl0=dd %>%
 
 tbl0a=tbl0 %>% filter(Span_DNA_T>0 & Split_DNA_T>0)
 
-forteFusionFile=fs::dir_ls(".",regex="__FusionTableV.__allEvents.csv",recur=T)
+# forteFusionFile=fs::dir_ls(".",regex="__FusionTableV.__allEvents.csv",recur=T)
 
-if(len(forteFusionFile)==0) {
-    cat("\nERROR: Can not find Forte Fusion output\n")
-    cat("*__FusionTableV?__allEvents.csv\n\n")
-    quit()
-}
+# if(len(forteFusionFile)==0) {
+#     cat("\nERROR: Can not find Forte Fusion output\n")
+#     cat("*__FusionTableV?__allEvents.csv\n\n")
+#     quit()
+# }
 
-mf=read_csv(forteFusionFile) %>%
-    select(1:11) %>%
-    mutate(Junction=gsub(":.::","::",Junction)%>%gsub(":.$","",.)%>%gsub("chr","",.)) %>%
-    mutate(Sample=gsub("s_","",Sample)) %>%
-    mutate(SampleId=Sample) %>%
-    select(SampleId,everything())
+# mf=read_csv(forteFusionFile) %>%
+#     select(1:11) %>%
+#     mutate(Junction=gsub(":.::","::",Junction)%>%gsub(":.$","",.)%>%gsub("chr","",.)) %>%
+#     mutate(Sample=gsub("s_","",Sample)) %>%
+#     mutate(SampleId=Sample) %>%
+#     select(SampleId,everything())
 
 integrateCols=1:which(colnames(dd)=="Splicings")
-
-tbl1=left_join(
-    dd %>% select(all_of(integrateCols)),mf,by = join_by(SampleId, Junction)) %>%
-    filter(!is.na(Sample)) %>%
-    arrange(Tier,desc(Split_RNA)) %>%
-    select(-Splicings,Splicings)
-
-tblHC=tbl1 %>% filter(!is.na(Sample) & Span_DNA_T>0)
 
 projNo=grep("Proj_",strsplit(getwd(),"/")[[1]],value=T)
 
@@ -73,13 +65,17 @@ genesFreq=tbl0 %>%
     arrange(desc(N)) %>%
     filter(N>1)
 
+sheets=list()
+if(nrow(fusionFreq)>0) {
+  sheets=c(sheets,list(FusionFreq=fusionFreq))
+}
+if(nrow(genesFreq)>0) {
+  sheets=c(sheets,list(GeneFreq=genesFreq))
+}
+sheets=c(sheets,list(IntegrateAll=tbl0))
+
 openxlsx::write.xlsx(
-            list(
-                FusionFreq=fusionFreq,
-                GeneFreq=genesFreq,
-                IntegrateAll=tbl0,
-                ExactJuncMatch=tbl1,
-                HighConf=tblHC
-            ),
-            cc(projNo,"IntegrateFusions",TYPE,"04.xlsx"))
+  sheets,
+  cc(projNo,"IntegrateFusions",TYPE,"v5.xlsx")
+)
 
