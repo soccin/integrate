@@ -65,6 +65,10 @@ genesFreq=tbl0 %>%
     arrange(desc(N)) %>%
     filter(N>1)
 
+SDIR=get_script_dir()
+tbl0Docs=read_csv(file.path(SDIR,"docs/tbl0_column_documentation.csv"),show_col_types=F,progress=F)
+tierDocs=read_csv(file.path(SDIR,"docs/tier_classification.csv"),show_col_types=F,progress=F)
+
 sheets=list()
 if(nrow(fusionFreq)>0) {
   sheets=c(sheets,list(FusionFreq=fusionFreq))
@@ -72,7 +76,8 @@ if(nrow(fusionFreq)>0) {
 if(nrow(genesFreq)>0) {
   sheets=c(sheets,list(GeneFreq=genesFreq))
 }
-sheets=c(sheets,list(IntegrateAll=tbl0))
+sheets=c(sheets,list(IntegrateAll=tbl0,ColumnDesc=tbl0Docs,TierInfo=tierDocs))
+
 
 openxlsx::write.xlsx(
   sheets,

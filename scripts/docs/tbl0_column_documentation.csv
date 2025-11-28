@@ -1,0 +1,19 @@
+Column Name,Description
+SampleId,Sample identifier extracted from the VCF header; unique identifier for each analyzed sample
+5_Prime,Name of the gene at the 5' (upstream) end of the fusion partner
+3_Prime,Name of the gene at the 3' (downstream) end of the fusion partner
+Junction,"Fusion junction coordinates in format Chr1:RNA_BK1::Chr2:RNA_BK2 (e.g., ""1:12345::5:67890"")"
+Reciprocal,Whether a reciprocal fusion was detected (Y/N); reciprocal fusions have both Gene_A::Gene_B and Gene_B::Gene_A
+Tier,Confidence classification level (1-7); lower numbers indicate higher confidence
+Type,"Fusion category: inter_chromosomal (different chromosomes), intra_chromosomal (same chromosome), or read_through (adjacent genes)"
+Span_RNA,Count of encompassing RNA-seq reads (read pairs where each mate maps to a different fusion partner gene)
+Split_RNA,Count of spanning RNA-seq reads (individual reads that cross the actual fusion junction)
+Span_DNA_T,Count of encompassing WGS reads from tumor sample (read pairs supporting the genomic breakpoint)
+Split_DNA_T,Count of spanning WGS reads from tumor sample (reads crossing the genomic breakpoint)
+Isoforms,List of fusion transcript variant isoforms detected for this gene pair
+Chr1,Chromosome of the 5' fusion partner
+RNA_BK1,RNA-seq determined breakpoint coordinate for the 5' fusion partner
+Chr2,Chromosome of the 3' fusion partner
+RNA_BK2,RNA-seq determined breakpoint coordinate for the 3' fusion partner
+Splicings,Detailed information about splice junctions involved in the fusion (moved to last column in output)
+SumRanks,"Computed ranking score based on percentile ranks of all four read count columns (Span_RNA, Split_RNA, Span_DNA_T, Split_DNA_T); used for sorting within tier"

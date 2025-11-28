@@ -1,0 +1,8 @@
+Tier,Junction Type,RNA-seq Evidence,WGS Evidence,Confidence Level,Description
+1,Canonical boundaries,Encompassing + Spanning,Encompassing + Spanning,Highest,Strong genomic rearrangement with expressed fusion transcript; validation rate ~95%
+2,Canonical boundaries,Encompassing + Spanning,Encompassing only,High,Genomic rearrangement present but spanning WGS reads not detected; validation rate ~95%
+3,Canonical boundaries,Encompassing + Spanning,None,Moderate,"May be transcriptional events, low-level genomic events, or technical artifacts; validation rate ~77% (for 3-nr subtype)"
+4,Non-canonical boundaries,Encompassing + Spanning,Encompassing + Spanning,High,Complex rearrangements with breakpoints in introns or truncated exons
+5,Non-canonical boundaries,Encompassing + Spanning,Encompassing only,Moderate,Genomic support present but limited WGS evidence
+6,Non-canonical boundaries,Encompassing + Spanning,None,Lower,Requires careful evaluation - may include artifacts
+7,Any,Any,Any,Germline,Likely germline events (present in both tumor and normal samples); low for somatic relevance
