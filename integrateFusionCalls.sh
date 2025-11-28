@@ -4,7 +4,7 @@
 #SBATCH --partition=test01
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=18
-#SBATCH --mem=144GB
+#SBATCH --mem=512GB
 #SBATCH --output=SLM/integrate_%j.out
 
 # BSUB: -o LSF/ -n 12 -R "rusage[mem=12]" -R cmorsc1 -W 24:00
