@@ -78,9 +78,21 @@ if(nrow(genesFreq)>0) {
 }
 sheets=c(sheets,list(IntegrateAll=tbl0,ColumnDesc=tbl0Docs,TierInfo=tierDocs))
 
+require(openxlsx)
+source(file.path(SDIR,"excel_utils.R"))
+wb <- createWorkbook()
 
-openxlsx::write.xlsx(
-  sheets,
-  cc(projNo,"IntegrateFusions",TYPE,"v5.xlsx")
-)
+for(sheetName in names(sheets)) {
+  addWorksheet(wb,sheetName,zoom=150)
+  writeData(wb,sheetName,sheets[[sheetName]],headerStyle=createStyle(textDecoration="italic"))
+  smartWidths=smart_col_widths(sheets[[sheetName]])
+  setColWidths(wb, sheetName, cols = 1:ncol(sheets[[sheetName]]), widths = smartWidths)
+}
+
+saveWorkbook(wb,cc(projNo,"IntegrateFusions",TYPE,"v5.xlsx"),overwrite=T)
+
+# openxlsx::write.xlsx(
+#   sheets,
+#   cc(projNo,"IntegrateFusions",TYPE,"v5.xlsx")
+# )
 
