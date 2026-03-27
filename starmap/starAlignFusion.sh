@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=starAlignFusion
 #SBATCH --time=1-00:00:00
-#SBATCH --partition=test01
+#SBATCH --partition=cmobic_cpu,cmobic_pipeline
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=18
 #SBATCH --mem=48GB
@@ -98,3 +98,4 @@ java -jar $PICARD_JAR \
 wait
 
 rm $CBAM
+
